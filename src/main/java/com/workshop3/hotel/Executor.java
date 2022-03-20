@@ -19,6 +19,8 @@ import java.util.Scanner;
  * UC9:- Ability to add special rates for reward customers as a part of Loyalty Program
  * UC10:- Ability to find the cheapest best rated hotel Hotel for a given Date Range for a
    Reward Customer
+   UC11:- Ability to find the cheapest best rated hotel Hotel for a given DateRange for a 
+   Reward Customer using Java Streams
   
  */
 public class Executor {
