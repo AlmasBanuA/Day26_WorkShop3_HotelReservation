@@ -9,13 +9,18 @@ package com.workshop3.hotel;
  * rates for Regular Customer...
  * UC2:- Ability to find the cheapest Hotel for a given Date Range
  * UC3:- Ability to add weekday and weekend rates for each Hotel
+ * UC4:- Ability to find the cheapest Hotel for a given Date Range based on weekday
+   and weekend
  */
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Scanner;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class HotelReservation {
 
@@ -24,6 +29,8 @@ public class HotelReservation {
 	 * object and adding into the array list for testing purpose
 	 */
 	ArrayList<Hotel> listOfHotels = new ArrayList<Hotel>();
+	Date startDate;
+	Date endDate;
 
 	/**
 	 * create method addHotel to add Hotels
@@ -51,9 +58,9 @@ public class HotelReservation {
 	 * @return -return to method created
 	 * @throws ParseException -throws exception
 	 */
-	public long getTotalNoOfDays(String start, String end) throws ParseException {
-		Date startDate = new SimpleDateFormat("ddMMMyyyy").parse(start);
-		Date endDate = new SimpleDateFormat("ddMMMyyyy").parse(end);
+	public long getTotalNoOfDays(String startDate1, String endDate1) throws ParseException {
+		startDate = new SimpleDateFormat("ddMMMyyyy").parse(startDate1);
+		endDate = new SimpleDateFormat("ddMMMyyyy").parse(endDate1);
 		long TotalNoOfDays = 1 + (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24;
 		return TotalNoOfDays;
 	}
@@ -69,34 +76,63 @@ public class HotelReservation {
 	}
 
 	/**
-	 * Main method for manipulation of Arraylist of Hotel
+	 * Creating a List of type String
 	 * 
-	 * @param args - Default Java param (Not used)
+	 * @param startDate1 -passing startDate1
+	 * @param endDate1   -passing endDate1
+	 * @return -return to method created
+	 * @throws ParseException -throws exception
 	 */
-	public static void main(String[] args) throws Exception {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Welcome to Hotel Reservation System!");
-		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
-		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
-		HotelReservation hotelReservation = new HotelReservation();
-		hotelReservation.addHotel(hotel1);
-		hotelReservation.addHotel(hotel2);
-		hotelReservation.addHotel(hotel3);
-		System.out.println("Enter the check in date in proper format(ddMMMyyyy)");
-		String startDate = sc.nextLine();
-		System.out.println("Enter the check out date in proper format(ddMMMyyyy)");
-		String endDate = sc.nextLine();
+	public List<String> findCheapestHotelBasedOnWeekEndAndWeekDaysOffer(String startDate1, String endDate1)
+			throws ParseException {
+		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+		long totalWeekendDays = getTotalWeekendDays();
+		long totalWeekDays = totalDays - totalWeekendDays;
 
 		/**
-		 * finding the cheapest Hotel for a given Date Range
+		 * creating Stream from list of hotelRentList. Filter operation produces a new
+		 * stream that contains elements of the original stream that pass a given
+		 * test(specified by a Predicate). filter(),is a Intermediate operations return
+		 * a new stream on which further processing can be done. here filter is used to
+		 * search particular hotel and the filtered stream is creates a list and will
+		 * collect in a hotelRentList using collector
 		 */
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel();
-		long totalDays = hotelReservation.getTotalNoOfDays("10Sep2020", "11Sep2020");
-		long totalCost = cheapestHotel.getWeekDayRateRegCus() * totalDays;
+		List<Long> hotelRentList = listOfHotels.stream().map(hotel -> {
+			return (hotel.getWeekDayRateRegCus() * totalWeekDays + hotel.getWeekEndRateRegCus() * totalWeekendDays);
+		}).collect(Collectors.toList());
+		long minRent = Collections.min(hotelRentList);
+		List<String> cheapHotelList = listOfHotels.stream()
+				.filter(hotel -> hotel.getWeekDayRateRegCus() * totalWeekDays
+						+ hotel.getWeekEndRateRegCus() * totalWeekendDays == minRent)
+				.map(hotel -> hotel.getHotelName()).collect(Collectors.toList());
 
-		System.out.println("Cheapest Hotel for your stay: " + cheapestHotel.getHotelName());
-		System.out.println("Total expense: " + totalCost);
-
+		return cheapHotelList;
 	}
+
+	/**
+	 * create method getTotalWeekendDays() to get totalweekenddays otherwise throws
+	 * exception
+	 * 
+	 * @return -return to method created
+	 * @throws ParseException -throws exception
+	 */
+	public long getTotalWeekendDays() throws ParseException {
+		long totalWeekendDays = 0;
+		Calendar startCalendar = Calendar.getInstance();
+		startCalendar.setTime(startDate);
+		Calendar endCalendar = Calendar.getInstance();
+		endCalendar.setTime(endDate);
+
+		/**
+		 * ForEach() method is used and it is a Terminal operations mark the stream as
+		 * consumed, after which point it can no longer be used further.
+		 */
+		for (; startCalendar.compareTo(endCalendar) <= 0; startCalendar.add(Calendar.DATE, 1)) {
+			int dayOfWeek = startCalendar.get(Calendar.DAY_OF_WEEK);
+			if (dayOfWeek == 0 || dayOfWeek == 6)
+				totalWeekendDays++;
+		}
+		return totalWeekendDays;
+	}
+
 }

@@ -3,6 +3,7 @@ package com.workshop3.hotel;
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ import org.junit.Test;
  */
 public class HotelReservationTest {
 	@Test
-	public void WhenHotelsAreAddedFindCheapestHotel() throws ParseException {
+	public void WhenHostelsAreAddedFindCheapestHotel() throws ParseException {
 		/**
 		 * Ability to adding weekday and weekend rates for each Hotel
 		 */
@@ -47,7 +48,7 @@ public class HotelReservationTest {
 	/**
 	 * method created when hotels are added it will return size
 	 */
-	public void WhenHotelsAreAddedReturnSize() {
+	public void WhenHostelsAreAddedReturnSize() {
 		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
 		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
 		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
@@ -57,5 +58,36 @@ public class HotelReservationTest {
 		hotelReservation.addHotel(hotel2);
 		hotelReservation.addHotel(hotel3);
 		assertEquals(3, hotelReservation.totalHotels());
+	}
+
+	@Test
+	/**
+	 * If the hotels are added and for that adding weekday and weekend rates for
+	 * each Hotel. In that we have to find the cheapest hotel if cheapest hotel is
+	 * present it will return true otherwise throws exception
+	 * 
+	 * @throws ParseException -throws exception
+	 */
+	public void WhenHostelsAreAddedFindCheapestHotelBasedOnWeekDayAndWeekEndRates() throws ParseException {
+		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
+		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
+
+		HotelReservation hotelReservation = new HotelReservation();
+		hotelReservation.addHotel(hotel1);
+		hotelReservation.addHotel(hotel2);
+		hotelReservation.addHotel(hotel3);
+		List<String> cheapestHotelList = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOffer("11sep2020",
+				"12sep2020");
+		String cheapestHotel = "";
+
+		/**
+		 * ForEach() method is used and it is a Terminal operations mark the stream as
+		 * consumed, after which point it can no longer be used further.
+		 */
+		for (String name : cheapestHotelList) {
+			cheapestHotel = name;
+		}
+		assertEquals("Lakewood", cheapestHotel);
 	}
 }
