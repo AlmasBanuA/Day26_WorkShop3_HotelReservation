@@ -16,7 +16,6 @@ import org.junit.Test;
  * @author Almas
  *
  */
-
 public class HotelReservationTest {
 	@Test
 	public void WhenHostelsAreAddedFindCheapestHotel() throws ParseException {
@@ -70,7 +69,7 @@ public class HotelReservationTest {
 	 * 
 	 * @throws ParseException -throws exception
 	 */
-	public void WhenHotelsAreAddedFindCheapestHotelBasedOnWeekDayAndWeekEndRates() throws ParseException {
+	public void WhenHostelsAreAddedFindCheapestHotelBasedOnWeekDayAndWeekEndRates() throws ParseException {
 		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
 		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
 		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
@@ -81,6 +80,7 @@ public class HotelReservationTest {
 		List<String> cheapestHotelList = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOffer("11sep2020",
 				"12sep2020");
 		String cheapestHotel = "";
+
 		/**
 		 * ForEach() method is used and it is a Terminal operations mark the stream as
 		 * consumed, after which point it can no longer be used further.
@@ -99,7 +99,7 @@ public class HotelReservationTest {
 	 * 
 	 * @throws ParseException -throws exception
 	 */
-	public void WhenHotelsAreAddedWithRatingsShouldPassTest() {
+	public void WhenHostelsAreAddedWithRatingsShouldPassTest() {
 		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
 		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
 		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
@@ -109,5 +109,27 @@ public class HotelReservationTest {
 		hotelReservation.addHotel(hotel2);
 		hotelReservation.addHotel(hotel3);
 		assertEquals(3, hotel1.getRating());
+	}
+
+	@Test
+	/**
+	 * If the hotels are added and for that adding weekday and weekend rates with
+	 * the ratings for each Hotel. In that we have to find the cheapest Best rated
+	 * hotel if cheapest Best Rated hotel is present it will return true otherwise
+	 * throws exception
+	 * 
+	 * @throws ParseException -throws exception
+	 */
+	public void WhenHostelsAreAddedFindCheapestHotelBasedOnWeekDayAndWeekEndRatesAndBestRating() throws ParseException {
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
+		HotelReservation hotelReservation = new HotelReservation();
+		hotelReservation.addHotel(hotel1);
+		hotelReservation.addHotel(hotel2);
+		hotelReservation.addHotel(hotel3);
+		String cheapestHotelBestRated = hotelReservation
+				.findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating("11sep2020", "12sep2020");
+		assertEquals("Bridgewood:4:200", cheapestHotelBestRated);
 	}
 }

@@ -98,6 +98,58 @@ public class HotelReservation {
 	}
 
 	/**
+	 * Ability to find the cheapest Hotel for a given Date Range based on weekday
+	 * and weekend
+	 * 
+	 * @param startDate1 -passing start Date1
+	 * @param endDate1   -passing endDate1
+	 * @return return to method created
+	 * @throws ParseException -throws exception
+	 */
+	public String findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating(String startDate1, String endDate1)
+			throws ParseException {
+		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+		long totalWeekendDays = getTotalWeekendDays();
+		long totalWeekDays = totalDays - totalWeekendDays;
+
+		/**
+		 * creating Stream from list of hotelRentList. Filter operation produces a new
+		 * stream that contains elements of the original stream that pass a given
+		 * test(specified by a Predicate). filter(),is a Intermediate operations return
+		 * a new stream on which further processing can be done. here filter is used to
+		 * search particular hotel and the filtered stream is creates a list and will
+		 * collect in a hotelRentList using collector
+		 */
+		List<Long> hotelRentList = listOfHotels.stream().map(hotel -> {
+			return (hotel.getWeekDayRateRegCus() * totalWeekDays + hotel.getWeekEndRateRegCus() * totalWeekendDays);
+		}).collect(Collectors.toList());
+		long minRent = Collections.min(hotelRentList);
+
+		/**
+		 * creating Stream from list of cheapHotelList. Filter operation produces a new
+		 * stream that contains elements of the original stream that pass a given
+		 * test(specified by a Predicate). filter(),is a Intermediate operations return
+		 * a new stream on which further processing can be done. here filter is used to
+		 * search particular hotel and the filtered stream is creates a list and will
+		 * collect in a cheapHotelList using collector
+		 */
+		List<Hotel> cheapHotelList = listOfHotels.stream().filter(hotel -> hotel.getWeekDayRateRegCus() * totalWeekDays
+				+ hotel.getWeekEndRateRegCus() * totalWeekendDays == minRent).collect(Collectors.toList());
+		Hotel bestRatingHotel = cheapHotelList.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
+
+		/**
+		 * ForEach() method is used and it is a Terminal operations mark the stream as
+		 * consumed, after which point it can no longer be used further.
+		 */
+		for (Hotel name : cheapHotelList) {
+			if (name.getRating() == bestRatingHotel.getRating()) {
+				return name.getHotelName() + ":" + name.getRating() + ":" + minRent;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * create method getTotalWeekendDays() to get totalweekenddays otherwise throws
 	 * exception
 	 * 

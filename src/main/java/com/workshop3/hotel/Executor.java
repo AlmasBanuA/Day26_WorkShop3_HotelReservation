@@ -15,6 +15,7 @@ import java.util.Scanner;
  * UC4:- Ability to find the cheapest Hotel for a given Date Range based on weekday
    and weekend
  * UC5:- Ability to add ratings to each Hotel - Lakewood is 3, Bridgewood is 4 and Ridgewood is 5
+ * UC6:- Ability to find the cheapest best rated hotel Hotel for a given Date Range
  */
 public class Executor {
 
