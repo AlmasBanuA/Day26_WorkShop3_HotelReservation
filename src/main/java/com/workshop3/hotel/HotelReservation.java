@@ -19,6 +19,49 @@ public class HotelReservation {
 	ArrayList<Hotel> listOfHotels = new ArrayList<Hotel>();
 	Date startDate;
 	Date endDate;
+	private String startDate1, endDate1;
+
+	/**
+	 * getting the startDate1 having return type
+	 * 
+	 * @return
+	 */
+	public String getStartDate1() {
+		return startDate1;
+	}
+
+	/**
+	 * boolean method to setStartDate1 in proper way if not throws exception
+	 * 
+	 * @param startDate1
+	 * @return
+	 * @throws InputValidationException
+	 */
+	public boolean setStartDate1(String startDate1) throws InputValidationException {
+		boolean check = false;
+		InputValidation inputValidation = new InputValidation();
+		check = inputValidation.dateValidation(startDate1);
+		if (check)
+			this.startDate1 = startDate1;
+		else
+			throw new InputValidationException("Enter proper checkin date");
+		return check;
+	}
+
+	public String getEndDate1() {
+		return endDate1;
+	}
+
+	public boolean setEndDate1(String endDate1) throws InputValidationException {
+		boolean check = false;
+		InputValidation inputValidation = new InputValidation();
+		check = inputValidation.dateValidation(endDate1);
+		if (check)
+			this.endDate1 = endDate1;
+		else
+			throw new InputValidationException("Enter proper checkout date");
+		return check;
+	}
 
 	/**
 	 * create method addHotel to add Hotels
@@ -46,9 +89,9 @@ public class HotelReservation {
 	 * @return -return to method created
 	 * @throws ParseException -throws exception
 	 */
-	public long getTotalNoOfDays(String startDate1, String endDate1) throws ParseException {
-		startDate = new SimpleDateFormat("ddMMMyyyy").parse(startDate1);
-		endDate = new SimpleDateFormat("ddMMMyyyy").parse(endDate1);
+	public long getTotalNoOfDays() throws ParseException {
+		startDate = new SimpleDateFormat("ddMMMyyyy").parse(getStartDate1());
+		endDate = new SimpleDateFormat("ddMMMyyyy").parse(getEndDate1());
 		long TotalNoOfDays = 1 + (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24;
 		return TotalNoOfDays;
 	}
@@ -71,9 +114,8 @@ public class HotelReservation {
 	 * @return -return to method created
 	 * @throws ParseException -throws exception
 	 */
-	public List<String> findCheapestHotelBasedOnWeekEndAndWeekDaysOffer(String startDate1, String endDate1)
-			throws ParseException {
-		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+	public List<String> findCheapestHotelBasedOnWeekEndAndWeekDaysOffer() throws ParseException {
+		long totalDays = getTotalNoOfDays();
 		long totalWeekendDays = getTotalWeekendDays();
 		long totalWeekDays = totalDays - totalWeekendDays;
 
@@ -83,8 +125,8 @@ public class HotelReservation {
 		 * test(specified by a Predicate). filter(),is a Intermediate operations return
 		 * a new stream on which further processing can be done. here filter is used to
 		 * search particular hotel and the filtered stream is creates a list and will
-		 * collect in a hotelRentList using collector
-		 */
+		 * collect
+		 **/
 		List<Long> hotelRentList = listOfHotels.stream().map(hotel -> {
 			return (hotel.getWeekDayRateRegCus() * totalWeekDays + hotel.getWeekEndRateRegCus() * totalWeekendDays);
 		}).collect(Collectors.toList());
@@ -106,27 +148,16 @@ public class HotelReservation {
 	 * @return return to method created
 	 * @throws ParseException -throws exception
 	 */
-	public String findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating(String startDate1, String endDate1)
-			throws ParseException {
-		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+	public String findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating() throws ParseException {
+		long totalDays = getTotalNoOfDays();
 		long totalWeekendDays = getTotalWeekendDays();
 		long totalWeekDays = totalDays - totalWeekendDays;
-
-		/**
-		 * creating Stream from list of hotelRentList. Filter operation produces a new
-		 * stream that contains elements of the original stream that pass a given
-		 * test(specified by a Predicate). filter(),is a Intermediate operations return
-		 * a new stream on which further processing can be done. here filter is used to
-		 * search particular hotel and the filtered stream is creates a list and will
-		 * collect in a hotelRentList using collector
-		 */
-		List<Long> hotelRentList = listOfHotels.stream().map(hotel -> {
+		List<Long> costOfHotelList = listOfHotels.stream().map(hotel -> {
 			return (hotel.getWeekDayRateRegCus() * totalWeekDays + hotel.getWeekEndRateRegCus() * totalWeekendDays);
 		}).collect(Collectors.toList());
-		long minRent = Collections.min(hotelRentList);
-
+		long minCost = Collections.min(costOfHotelList);
 		List<Hotel> cheapHotelList = listOfHotels.stream().filter(hotel -> hotel.getWeekDayRateRegCus() * totalWeekDays
-				+ hotel.getWeekEndRateRegCus() * totalWeekendDays == minRent).collect(Collectors.toList());
+				+ hotel.getWeekEndRateRegCus() * totalWeekendDays == minCost).collect(Collectors.toList());
 		Hotel bestRatingHotel = cheapHotelList.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
 
 		/**
@@ -135,7 +166,7 @@ public class HotelReservation {
 		 */
 		for (Hotel name : cheapHotelList) {
 			if (name.getRating() == bestRatingHotel.getRating()) {
-				return name.getHotelName() + ":" + name.getRating() + ":" + minRent;
+				return name.getHotelName() + ":" + name.getRating() + ":" + minCost;
 			}
 		}
 		return null;
@@ -149,9 +180,9 @@ public class HotelReservation {
 	 * @return return to method created
 	 * @throws ParseException - throws exception
 	 */
-	public String findBestRatedHotel(String startDate1, String endDate1) throws ParseException {
+	public String findBestRatedHotel() throws ParseException {
 		Hotel bestRatedHotel = listOfHotels.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
-		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+		long totalDays = getTotalNoOfDays();
 		long totalWeekendDays = getTotalWeekendDays();
 		long totalWeekDays = totalDays - totalWeekendDays;
 		long costOfHotel = CostOfHotel(bestRatedHotel, totalWeekendDays, totalWeekDays);
@@ -168,6 +199,45 @@ public class HotelReservation {
 	 */
 	public long CostOfHotel(Hotel hotel, long weekDays, long weekendDays) {
 		return (hotel.getWeekDayRateRegCus() * weekDays + hotel.getWeekEndRateRegCus() * weekendDays);
+	}
+
+	/**
+	 * Ability to find the cheapest best rated hotel Hotel for a given Date Range
+	 * for a Reward Customer
+	 * 
+	 * @return
+	 * @throws ParseException
+	 */
+	public String findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRatingForRewardCustomer()
+			throws ParseException {
+		long totalDays = getTotalNoOfDays();
+		long totalWeekendDays = getTotalWeekendDays();
+		long totalWeekDays = totalDays - totalWeekendDays;
+
+		/**
+		 * creating Stream from list of costOfHotelList. Filter operation produces a new
+		 * stream that contains elements of the original stream that pass a given
+		 * test(specified by a Predicate). filter(),is a Intermediate operations return
+		 * a new stream on which further processing can be done. here filter is used to
+		 * search particular hotel and the filtered stream is creates a list and will
+		 * collect in a costOfHotelList using collector
+		 */
+		List<Long> costOfHotelList = listOfHotels.stream().map(hotel -> {
+			return (hotel.getWeekDayRateRewardCus() * totalWeekDays
+					+ hotel.getWeekEndRateRewardCus() * totalWeekendDays);
+		}).collect(Collectors.toList());
+		long minCost = Collections.min(costOfHotelList);
+		List<Hotel> cheapHotelList = listOfHotels.stream()
+				.filter(hotel -> hotel.getWeekDayRateRewardCus() * totalWeekDays
+						+ hotel.getWeekEndRateRewardCus() * totalWeekendDays == minCost)
+				.collect(Collectors.toList());
+		Hotel bestRatingHotel = cheapHotelList.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
+		for (Hotel name : cheapHotelList) {
+			if (name.getRating() == bestRatingHotel.getRating()) {
+				return name.getHotelName() + ":" + name.getRating() + ":" + minCost;
+			}
+		}
+		return null;
 	}
 
 	/**

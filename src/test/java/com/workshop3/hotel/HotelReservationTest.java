@@ -7,22 +7,23 @@ import java.util.List;
 
 import org.junit.Test;
 
-/**
- * In this we are creating the test cases. If the hotels are added and for that
- * adding weekday and weekend rates for each Hotel. In that we have to find the
- * cheapest hotel if cheapest hotel is present it will return true otherwise
- * throws exception
- * 
- * @author Almas
- *
- */
-
 public class HotelReservationTest {
+
+	/**
+	 * In this we are creating the test cases. If the hotels are added and for that
+	 * adding weekday and weekend rates for each Hotel. In that we have to find the
+	 * cheapest hotel if cheapest hotel is present it will return true otherwise
+	 * throws exception
+	 * 
+	 * @author Almas
+	 *
+	 */
 	@Test
+	/**
+	 * Ability to adding weekday and weekend rates and add ratings with special
+	 * rates for both regular and reward customers
+	 */
 	public void WhenHotelsAreAddedFindCheapestHotel() throws ParseException {
-		/**
-		 * Ability to adding weekday and weekend rates and add ratings to each Hotel
-		 */
 		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
 		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50, 110, 50);
 		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
@@ -34,12 +35,14 @@ public class HotelReservationTest {
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
 		hotelReservation.addHotel(hotel3);
-
-		/**
-		 * finding the cheapest Hotel for a given Date Range
-		 */
 		Hotel cheapestHotel = hotelReservation.findCheapestHotel();
-		long totalDays = hotelReservation.getTotalNoOfDays("10sep2020", "11sep2020");
+		try {
+			hotelReservation.setStartDate1("10sep2020");
+			hotelReservation.setEndDate1("11sep2020");
+		} catch (InputValidationException e) {
+			System.out.println(e.getMessage());
+		}
+		long totalDays = hotelReservation.getTotalNoOfDays();
 		long totalCost = cheapestHotel.getWeekDayRateRegCus() * totalDays;
 		assertEquals(220, totalCost);
 		assertEquals("Lakewood", cheapestHotel.getHotelName());
@@ -78,8 +81,13 @@ public class HotelReservationTest {
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
 		hotelReservation.addHotel(hotel3);
-		List<String> cheapestHotelList = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOffer("11sep2020",
-				"12sep2020");
+		try {
+			hotelReservation.setStartDate1("11sep2020");
+			hotelReservation.setEndDate1("12sep2020");
+		} catch (InputValidationException e) {
+			System.out.println(e.getMessage());
+		}
+		List<String> cheapestHotelList = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOffer();
 		String cheapestHotel = "";
 
 		/**
@@ -129,8 +137,13 @@ public class HotelReservationTest {
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
 		hotelReservation.addHotel(hotel3);
-		String cheapestHotelBestRated = hotelReservation
-				.findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating("11sep2020", "12sep2020");
+		try {
+			hotelReservation.setStartDate1("11sep2020");
+			hotelReservation.setEndDate1("12sep2020");
+		} catch (InputValidationException e) {
+			System.out.println(e.getMessage());
+		}
+		String cheapestHotelBestRated = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating();
 		assertEquals("Bridgewood:4:200", cheapestHotelBestRated);
 	}
 
@@ -149,7 +162,13 @@ public class HotelReservationTest {
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
 		hotelReservation.addHotel(hotel3);
-		String HotelBestRated = hotelReservation.findBestRatedHotel("11sep2020", "12sep2020");
+		try {
+			hotelReservation.setStartDate1("11sep2020");
+			hotelReservation.setEndDate1("12sep2020");
+		} catch (InputValidationException e) {
+			System.out.println(e.getMessage());
+		}
+		String HotelBestRated = hotelReservation.findBestRatedHotel();
 		assertEquals("Ridgewood:370", HotelBestRated);
 	}
 
@@ -168,6 +187,33 @@ public class HotelReservationTest {
 		hotelReservation.addHotel(hotel2);
 		hotelReservation.addHotel(hotel3);
 		assertEquals(110, hotel2.getWeekDayRateRewardCus());
+	}
+
+	@Test
+	/**
+	 * Ability to find the cheapest best rated hotel Hotel for a given Date Range
+	 * for a Reward Customer - Ability to validate the user inputs for
+	 * 
+	 * @throws ParseException -throws exception
+	 */
+	public void WhenHotelsAreAddedFindCheapestHotelBasedOnWeekDayAndWeekEndRatesAndBestRatingForRewardCustomer()
+			throws ParseException {
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50, 110, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
+		HotelReservation hotelReservation = new HotelReservation();
+		hotelReservation.addHotel(hotel1);
+		hotelReservation.addHotel(hotel2);
+		hotelReservation.addHotel(hotel3);
+		try {
+			hotelReservation.setStartDate1("11sep2020");
+			hotelReservation.setEndDate1("12sep2020");
+		} catch (InputValidationException e) {
+			System.out.println(e.getMessage());
+		}
+		String cheapestHotelBestRated = hotelReservation
+				.findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRatingForRewardCustomer();
+		assertEquals("Ridgewood:5:140", cheapestHotelBestRated);
 	}
 
 }
