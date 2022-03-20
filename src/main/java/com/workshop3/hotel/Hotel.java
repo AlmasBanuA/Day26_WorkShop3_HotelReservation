@@ -1,6 +1,7 @@
 package com.workshop3.hotel;
 
 public class Hotel {
+
 	/**
 	 * private variables can only be accessed within the same class (an outside
 	 * class has no access to it) private = restricted access However, it is
@@ -8,23 +9,74 @@ public class Hotel {
 	 */
 	private String hotelName;
 	private int rating;
-	private int weekEndRateRegCus;
 	private int weekDayRateRegCus;
+	private int weekEndRateRegCus;
+	private int weekDayRateRewardCus;
 
 	/**
 	 * creating a parameterized constructor of Hotel by passing parameters with no
 	 * return type
 	 * 
-	 * @param hotelName         passing hotelName
-	 * @param weekDayRateRegCus -passing weekday rate for regular customer
-	 * @param weekEndRateRegCus - passing weekend rate for regular customer
+	 * @param hotelName                    -passing hotelNames
+	 * @param rating                       -passing rating of hotels
+	 * @param weekDayRateRegCus-passing    weekday rate of regular customers
+	 * @param weekEndRateRegCus-passing    weekend rate of regular customers
+	 * @param weekDayRateRewardCus-passing weekday rate of reward customers
+	 * @param weekEndRateRewardCus-passing weekend rate of reward customers
 	 */
-	public Hotel(String hotelName, int rating, int weekDayRateRegCus, int weekEndRateRegCus) {
+	public Hotel(String hotelName, int rating, int weekDayRateRegCus, int weekEndRateRegCus, int weekDayRateRewardCus,
+			int weekEndRateRewardCus) {
 		super();
 		this.hotelName = hotelName;
 		this.rating = rating;
 		this.weekDayRateRegCus = weekDayRateRegCus;
 		this.weekEndRateRegCus = weekEndRateRegCus;
+		this.weekDayRateRewardCus = weekDayRateRewardCus;
+		this.weekEndRateRewardCus = weekEndRateRewardCus;
+	}
+
+	private int weekEndRateRewardCus;
+
+	/**
+	 * created method getWeekEndRateRewardCus() The get method returns the value of
+	 * the variable WeekEndRateRewardCus
+	 * 
+	 * @return -return to the method created
+	 */
+	public int getWeekEndRateRewardCus() {
+		return weekEndRateRewardCus;
+	}
+
+	/**
+	 * here set method takes a parameter (weekEndRateRewardCus) and assigns it to
+	 * the weekendRateRewardCus variable. The this keyword is used to refer to the
+	 * current object.
+	 * 
+	 * @param weekDayRateRegCus -passing the weekDay rate of regular customer
+	 */
+	public void setWeekEndRateRewardCus(int weekEndRateRewardCus) {
+		this.weekEndRateRewardCus = weekEndRateRewardCus;
+	}
+
+	/**
+	 * created method getWeekDayRateRewardCus() The get method returns the value of
+	 * the variable WeekDayRateRewardCus
+	 * 
+	 * @return -return to the method created
+	 */
+	public int getWeekDayRateRewardCus() {
+		return weekDayRateRewardCus;
+	}
+
+	/**
+	 * here set method takes a parameter (weekDayRateRewardCus) and assigns it to
+	 * the weekDayRateRewardCus variable. The this keyword is used to refer to the
+	 * current object.
+	 * 
+	 * @param weekDayRateRewardCus -passing the weekDay rate of reward customer
+	 */
+	public void setWeekDayRateRewardCus(int weekDayRateRewardCus) {
+		this.weekDayRateRewardCus = weekDayRateRewardCus;
 	}
 
 	/**
@@ -38,7 +90,7 @@ public class Hotel {
 	}
 
 	/**
-	 * he set method takes a parameter (hotelName) and assigns it to the hotelName
+	 * here set method takes a parameter (hotelName) and assigns it to the hotelName
 	 * variable. The this keyword is used to refer to the current object.
 	 * 
 	 * @param hotelName -pass the hotelName
@@ -58,7 +110,7 @@ public class Hotel {
 	}
 
 	/**
-	 * he set method takes a parameter (rating) and assigns it to the rating
+	 * here set method takes a parameter (rating) and assigns it to the rating
 	 * variable. The this keyword is used to refer to the current object.
 	 * 
 	 * @param rating -pass the ratings
@@ -78,7 +130,7 @@ public class Hotel {
 	}
 
 	/**
-	 * he set method takes a parameter (weekEndRateRegCus) and assigns it to the
+	 * here set method takes a parameter (weekEndRateRegCus) and assigns it to the
 	 * weekEndRateRegCus variable. The this keyword is used to refer to the current
 	 * object.
 	 * 
@@ -99,7 +151,7 @@ public class Hotel {
 	}
 
 	/**
-	 * he set method takes a parameter (weekDayRateRegCus) and assigns it to the
+	 * here set method takes a parameter (weekDayRateRegCus) and assigns it to the
 	 * weekDayRateRegCus variable. The this keyword is used to refer to the current
 	 * object.
 	 * 

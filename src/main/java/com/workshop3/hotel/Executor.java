@@ -17,6 +17,8 @@ import java.util.Scanner;
  * UC5:- Ability to add ratings to each Hotel - Lakewood is 3, Bridgewood is 4 and Ridgewood is 5
  * UC6:- Ability to find the cheapest best rated hotel Hotel for a given Date Range
  * UC7:- Ability to find the Best Rated Hotel for a given Date Range
+ * UC9:- Ability to add special rates for reward customers as a part of Loyalty Program
+  
  */
 public class Executor {
 
@@ -32,9 +34,9 @@ public class Executor {
 		/**
 		 * Ability to adding weekday and weekend rates with ratings for each Hotel
 		 */
-		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50);
-		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50, 110, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
 
 		/**
 		 * creating instance of HotelReservation class and adding the hotels
