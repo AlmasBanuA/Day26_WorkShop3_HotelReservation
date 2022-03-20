@@ -1,17 +1,5 @@
 package com.workshop3.hotel;
 
-/**
- * ----------------------------------------------------
- * PROCEDURE:
- * ----------------------------------------------------
- /** 
- * UC1:- Ability to add Hotel in a Hotel Reservation System with Name and
- * rates for Regular Customer...
- * UC2:- Ability to find the cheapest Hotel for a given Date Range
- * UC3:- Ability to add weekday and weekend rates for each Hotel
- * UC4:- Ability to find the cheapest Hotel for a given Date Range based on weekday
-   and weekend
- */
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

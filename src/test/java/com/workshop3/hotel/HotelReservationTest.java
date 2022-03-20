@@ -16,15 +16,17 @@ import org.junit.Test;
  * @author Almas
  *
  */
+
 public class HotelReservationTest {
 	@Test
 	public void WhenHostelsAreAddedFindCheapestHotel() throws ParseException {
+
 		/**
-		 * Ability to adding weekday and weekend rates for each Hotel
+		 * Ability to adding weekday and weekend rates and add ratings to each Hotel
 		 */
-		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
-		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
 
 		/**
 		 * creating instance of HotelReservation class and adding the hotels
@@ -38,7 +40,7 @@ public class HotelReservationTest {
 		 * finding the cheapest Hotel for a given Date Range
 		 */
 		Hotel cheapestHotel = hotelReservation.findCheapestHotel();
-		long totalDays = hotelReservation.getTotalNoOfDays("10Sep2020", "11Sep2020");
+		long totalDays = hotelReservation.getTotalNoOfDays("10sep2020", "11sep2020");
 		long totalCost = cheapestHotel.getWeekDayRateRegCus() * totalDays;
 		assertEquals(220, totalCost);
 		assertEquals("Lakewood", cheapestHotel.getHotelName());
@@ -49,9 +51,9 @@ public class HotelReservationTest {
 	 * method created when hotels are added it will return size
 	 */
 	public void WhenHostelsAreAddedReturnSize() {
-		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
-		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
 
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
@@ -68,11 +70,10 @@ public class HotelReservationTest {
 	 * 
 	 * @throws ParseException -throws exception
 	 */
-	public void WhenHostelsAreAddedFindCheapestHotelBasedOnWeekDayAndWeekEndRates() throws ParseException {
-		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
-		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
-
+	public void WhenHotelsAreAddedFindCheapestHotelBasedOnWeekDayAndWeekEndRates() throws ParseException {
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
@@ -80,7 +81,6 @@ public class HotelReservationTest {
 		List<String> cheapestHotelList = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOffer("11sep2020",
 				"12sep2020");
 		String cheapestHotel = "";
-
 		/**
 		 * ForEach() method is used and it is a Terminal operations mark the stream as
 		 * consumed, after which point it can no longer be used further.
@@ -89,5 +89,25 @@ public class HotelReservationTest {
 			cheapestHotel = name;
 		}
 		assertEquals("Lakewood", cheapestHotel);
+	}
+
+	@Test
+	/**
+	 * If the hotels are added and for that adding weekday and weekend rates with
+	 * the ratings for each Hotel. In that we have to find the cheapest hotel if
+	 * cheapest hotel is present it will return true otherwise throws exception
+	 * 
+	 * @throws ParseException -throws exception
+	 */
+	public void WhenHotelsAreAddedWithRatingsShouldPassTest() {
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
+
+		HotelReservation hotelReservation = new HotelReservation();
+		hotelReservation.addHotel(hotel1);
+		hotelReservation.addHotel(hotel2);
+		hotelReservation.addHotel(hotel3);
+		assertEquals(3, hotel1.getRating());
 	}
 }

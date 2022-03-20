@@ -7,6 +7,7 @@ public class Hotel {
 	 * possible to access them if we provide public get and set methods.
 	 */
 	private String hotelName;
+	private int rating;
 	private int weekEndRateRegCus;
 	private int weekDayRateRegCus;
 
@@ -18,9 +19,10 @@ public class Hotel {
 	 * @param weekDayRateRegCus -passing weekday rate for regular customer
 	 * @param weekEndRateRegCus - passing weekend rate for regular customer
 	 */
-	public Hotel(String hotelName, int weekDayRateRegCus, int weekEndRateRegCus) {
+	public Hotel(String hotelName, int rating, int weekDayRateRegCus, int weekEndRateRegCus) {
 		super();
 		this.hotelName = hotelName;
+		this.rating = rating;
 		this.weekDayRateRegCus = weekDayRateRegCus;
 		this.weekEndRateRegCus = weekEndRateRegCus;
 	}
@@ -43,6 +45,26 @@ public class Hotel {
 	 */
 	public void setHotelName(String hotelName) {
 		this.hotelName = hotelName;
+	}
+
+	/**
+	 * created method getRating() The get method returns the value of the variable
+	 * rating.
+	 * 
+	 * @return -return to method created
+	 */
+	public int getRating() {
+		return rating;
+	}
+
+	/**
+	 * he set method takes a parameter (rating) and assigns it to the rating
+	 * variable. The this keyword is used to refer to the current object.
+	 * 
+	 * @param rating -pass the ratings
+	 */
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 	/**
