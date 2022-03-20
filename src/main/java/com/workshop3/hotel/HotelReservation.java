@@ -125,14 +125,6 @@ public class HotelReservation {
 		}).collect(Collectors.toList());
 		long minRent = Collections.min(hotelRentList);
 
-		/**
-		 * creating Stream from list of cheapHotelList. Filter operation produces a new
-		 * stream that contains elements of the original stream that pass a given
-		 * test(specified by a Predicate). filter(),is a Intermediate operations return
-		 * a new stream on which further processing can be done. here filter is used to
-		 * search particular hotel and the filtered stream is creates a list and will
-		 * collect in a cheapHotelList using collector
-		 */
 		List<Hotel> cheapHotelList = listOfHotels.stream().filter(hotel -> hotel.getWeekDayRateRegCus() * totalWeekDays
 				+ hotel.getWeekEndRateRegCus() * totalWeekendDays == minRent).collect(Collectors.toList());
 		Hotel bestRatingHotel = cheapHotelList.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
@@ -147,6 +139,35 @@ public class HotelReservation {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Ability to find the Best Rated Hotel for a given Date Range
+	 * 
+	 * @param startDate1-passing start date1
+	 * @param endDate1           - end date1
+	 * @return return to method created
+	 * @throws ParseException - throws exception
+	 */
+	public String findBestRatedHotel(String startDate1, String endDate1) throws ParseException {
+		Hotel bestRatedHotel = listOfHotels.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
+		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+		long totalWeekendDays = getTotalWeekendDays();
+		long totalWeekDays = totalDays - totalWeekendDays;
+		long costOfHotel = CostOfHotel(bestRatedHotel, totalWeekendDays, totalWeekDays);
+		return bestRatedHotel.getHotelName() + ":" + costOfHotel;
+	}
+
+	/**
+	 * finding the cost of each hotel based on weekdays and weekend
+	 * 
+	 * @param hotel
+	 * @param weekDays
+	 * @param weekendDays
+	 * @return
+	 */
+	public long CostOfHotel(Hotel hotel, long weekDays, long weekendDays) {
+		return (hotel.getWeekDayRateRegCus() * weekDays + hotel.getWeekEndRateRegCus() * weekendDays);
 	}
 
 	/**
