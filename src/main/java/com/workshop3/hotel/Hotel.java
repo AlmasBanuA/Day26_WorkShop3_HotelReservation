@@ -16,11 +16,13 @@ public class Hotel {
 	 * 
 	 * @param hotelName         passing hotelName
 	 * @param weekDayRateRegCus -passing weekday rate for regular customer
+	 * @param weekEndRateRegCus - passing weekend rate for regular customer
 	 */
-	public Hotel(String hotelName, int weekDayRateRegCus) {
+	public Hotel(String hotelName, int weekDayRateRegCus, int weekEndRateRegCus) {
 		super();
 		this.hotelName = hotelName;
 		this.weekDayRateRegCus = weekDayRateRegCus;
+		this.weekEndRateRegCus = weekEndRateRegCus;
 	}
 
 	/**
